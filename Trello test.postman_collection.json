@@ -1,0 +1,4989 @@
+{
+	"info": {
+		"_postman_id": "b7f4b4b7-7aff-4c77-b60c-f68508ee7b94",
+		"name": "Trello test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Single endpoints tests",
+			"item": [
+				{
+					"name": "Creating a new table",
+					"item": [
+						{
+							"name": "Creating a new table [valid] Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function getboardid(){\r",
+											"  var jsonData = pm.response.json();\r",
+											"  return jsonData.id;\r",
+											"}\r",
+											"\r",
+											"pm.collectionVariables.set(\"newBoardID\",getboardid())\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - name: Test123\", function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.name).to.equal('Test123');\r",
+											"\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - permissionLevel: private\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.prefs.permissionLevel).to.equal(\"private\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Body matches string - value: null\",function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData._value).to.eql(null);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new table [empty name]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid value for name\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid value for name\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name=&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": ""
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new table [empty key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key=&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new table [empty token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - unauthorized permission requested\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"unauthorized permission requested\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new table [null key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key=null&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new table [null token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - unauthorized permission requested\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"unauthorized permission requested\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token=null",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new table [null key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key=null&token=null",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new table [empty key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key=&token=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "token",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new table [wrong key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key=f04556e464af24a1229159f79565af7e&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "f04556e464af24a1229159f79565af7e"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new table [wrong token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid token\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token=ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Creating a new list",
+					"item": [
+						{
+							"name": "Creating a new table [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function getboardid(){\r",
+											"  var jsonData = pm.response.json();\r",
+											"  return jsonData.id;\r",
+											"}\r",
+											"\r",
+											"pm.collectionVariables.set(\"newBoardID\",getboardid())\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - name: Test123\", function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.name).to.equal('Test123');\r",
+											"\r",
+											"});\r",
+											"pm.test(\"Response body - permissionLevel: private\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.prefs.permissionLevel).to.equal(\"private\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function getlistid(){\r",
+											"  var jsonData = pm.response.json();\r",
+											"  return jsonData.id;\r",
+											"}\r",
+											"\r",
+											"pm.collectionVariables.set(\"newListID\",getlistid())\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idBoard', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newBoardID\")).is.eql(jsonData.idBoard);   \r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Testowa lista"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Archiving - update a new list [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idList', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newListID\")).is.eql(jsonData.id);   \r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idBoard', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newBoardID\")).is.eql(jsonData.idBoard);   \r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - name: Testowa lista\", function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.name).to.equal('Testowa lista');\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "https://api.trello.com/1/lists/{{newListID}}?key={{API_KEY}}&token={{TOKEN_KEY}}&closed=true",
+									"protocol": "https",
+									"host": [
+										"api",
+										"trello",
+										"com"
+									],
+									"path": [
+										"1",
+										"lists",
+										"{{newListID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "closed",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Archiving a new list [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idList', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newListID\")).is.eql(jsonData.id);   \r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idBoard', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newBoardID\")).is.eql(jsonData.idBoard);   \r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - name: Testowa lista\", function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.name).to.equal('Testowa lista');\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/lists/{{newListID}}/closed?key={{API_KEY}}&token={{TOKEN_KEY}}&value=true",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"lists",
+										"{{newListID}}",
+										"closed"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "value",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [valid] Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Body matches string - value: null\",function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData._value).to.eql(null);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [empty name]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid value for name\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid value for name\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": ""
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [empty key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key=&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Testowa lista"
+										},
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [empty token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - The requested resource was not found.\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"The requested resource was not found.\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key={{API_KEY}}&token=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Testowa lista"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [null key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key=null&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Testowa lista"
+										},
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [null token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - The requested resource was not found.\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"The requested resource was not found.\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key={{API_KEY}}&token=null",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Testowa lista"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [null key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key=null&token=null",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Testowa lista"
+										},
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [empty key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key=&token=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Testowa lista"
+										},
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "token",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [wrong key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key=f04556e464af24a1229159f79565af7e&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Testowa lista"
+										},
+										{
+											"key": "key",
+											"value": "f04556e464af24a1229159f79565af7e"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [wrong token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid token\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key={{API_KEY}}&token=ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Testowa lista"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Creating a new card",
+					"item": [
+						{
+							"name": "Creating a new table [valid] Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function getboardid(){\r",
+											"  var jsonData = pm.response.json();\r",
+											"  return jsonData.id;\r",
+											"}\r",
+											"\r",
+											"pm.collectionVariables.set(\"newBoardID\",getboardid())\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - name: Test123\", function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.name).to.equal('Test123');\r",
+											"\r",
+											"});\r",
+											"pm.test(\"Response body - permissionLevel: private\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.prefs.permissionLevel).to.equal(\"private\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [valid] Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function getlistid(){\r",
+											"  var jsonData = pm.response.json();\r",
+											"  return jsonData.id;\r",
+											"}\r",
+											"\r",
+											"pm.collectionVariables.set(\"newListID\",getlistid())\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idBoard', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newBoardID\")).is.eql(jsonData.idBoard);   \r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Testowa lista"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new card [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function getcardid(){\r",
+											"  var jsonData = pm.response.json();\r",
+											"  return jsonData.id;\r",
+											"}\r",
+											"\r",
+											"pm.collectionVariables.set(\"newCardID\",getcardid())\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idBoard', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newBoardID\")).is.eql(jsonData.idBoard);   \r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idList', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newListID\")).is.eql(jsonData.idList);   \r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards"
+									],
+									"query": [
+										{
+											"key": "idList",
+											"value": "{{newListID}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Archiving - update a new list [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idList', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newListID\")).is.eql(jsonData.id);   \r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idBoard', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newBoardID\")).is.eql(jsonData.idBoard);   \r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - name: Testowa lista\", function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.name).to.equal('Testowa lista');\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "https://api.trello.com/1/lists/{{newListID}}?key={{API_KEY}}&token={{TOKEN_KEY}}&closed=true",
+									"protocol": "https",
+									"host": [
+										"api",
+										"trello",
+										"com"
+									],
+									"path": [
+										"1",
+										"lists",
+										"{{newListID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "closed",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Archiving a new list [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idList', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newListID\")).is.eql(jsonData.id);   \r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idBoard', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newBoardID\")).is.eql(jsonData.idBoard);   \r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - name: Testowa lista\", function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.name).to.equal('Testowa lista');\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/lists/{{newListID}}/closed?key={{API_KEY}}&token={{TOKEN_KEY}}&value=true",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"lists",
+										"{{newListID}}",
+										"closed"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "value",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a card [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Body matches string - limits: {}\",function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.limits).to.eql({});\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards/{{newCardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards",
+										"{{newCardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [valid] Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Body matches string - value: null\",function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData._value).to.eql(null);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new card [empty list]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid value for idList\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid value for idList\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards?idList=&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards"
+									],
+									"query": [
+										{
+											"key": "idList",
+											"value": ""
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new card [empty key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key=&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards"
+									],
+									"query": [
+										{
+											"key": "idList",
+											"value": "{{newListID}}"
+										},
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new card [empty token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - could not find the board that the card belongs to\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"could not find the board that the card belongs to\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key={{API_KEY}}&token=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards"
+									],
+									"query": [
+										{
+											"key": "idList",
+											"value": "{{newListID}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new card [null key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key=null&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards"
+									],
+									"query": [
+										{
+											"key": "idList",
+											"value": "{{newListID}}"
+										},
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new card [null token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - could not find the board that the card belongs to\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"could not find the board that the card belongs to\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key={{API_KEY}}&token=null",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards"
+									],
+									"query": [
+										{
+											"key": "idList",
+											"value": "{{newListID}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new card [null key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key=null&token=null",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards"
+									],
+									"query": [
+										{
+											"key": "idList",
+											"value": "{{newListID}}"
+										},
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new card [empty key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key=&token=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards"
+									],
+									"query": [
+										{
+											"key": "idList",
+											"value": "{{newListID}}"
+										},
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "token",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new card [wrong key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key=f04556e464af24a1229159f79565af7e&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards"
+									],
+									"query": [
+										{
+											"key": "idList",
+											"value": "{{newListID}}"
+										},
+										{
+											"key": "key",
+											"value": "f04556e464af24a1229159f79565af7e"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new card [wrong token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid token\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key={{API_KEY}}&token=ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards"
+									],
+									"query": [
+										{
+											"key": "idList",
+											"value": "{{newListID}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Updating a table",
+					"item": [
+						{
+							"name": "Creating a new table [valid] Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function getboardid(){\r",
+											"  var jsonData = pm.response.json();\r",
+											"  return jsonData.id;\r",
+											"}\r",
+											"\r",
+											"pm.collectionVariables.set(\"newBoardID\",getboardid())\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - name: Test123\", function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.name).to.equal('Test123');\r",
+											"\r",
+											"});\r",
+											"pm.test(\"Response body - permissionLevel: private\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.prefs.permissionLevel).to.equal(\"private\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updating a table [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - name: Test123\", function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.name).to.equal('Test123');\r",
+											"\r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idBoard', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newBoardID\")).is.eql(jsonData.id);   \r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}&closed=true",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "closed",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [valid] Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Body matches string - value: null\",function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData._value).to.eql(null);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updating a table [empty key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid value for closed\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid value for closed\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}&closed=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "closed",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updating a table [empty token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - The requested resource was not found.\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"The requested resource was not found.\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token=&closed=true",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": ""
+										},
+										{
+											"key": "closed",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updating a table [empty 'close' field]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid value for closed\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid value for closed\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}&closed=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "closed",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updating a table [null key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key=null&token={{TOKEN_KEY}}&closed=true",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "closed",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updating a table [null token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - The requested resource was not found.\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"The requested resource was not found.\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token=null&closed=true",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										},
+										{
+											"key": "closed",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updating a table [null key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key=null&token=null&closed=true",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										},
+										{
+											"key": "closed",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updating a table [empty key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key=&token=&closed=true",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "token",
+											"value": ""
+										},
+										{
+											"key": "closed",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updating a table [wrong key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key=f04556e464af24a1229159f79565af7e&token={{TOKEN_KEY}}&closed=true",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "f04556e464af24a1229159f79565af7e"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "closed",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updating a table [wrong token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid token\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token=ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738&closed=true",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738"
+										},
+										{
+											"key": "closed",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Deleting a card",
+					"item": [
+						{
+							"name": "Creating a new table [valid] Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function getboardid(){\r",
+											"  var jsonData = pm.response.json();\r",
+											"  return jsonData.id;\r",
+											"}\r",
+											"\r",
+											"pm.collectionVariables.set(\"newBoardID\",getboardid())\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - name: Test123\", function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.name).to.equal('Test123');\r",
+											"\r",
+											"});\r",
+											"pm.test(\"Response body - permissionLevel: private\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.prefs.permissionLevel).to.equal(\"private\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new list [valid] Copy 2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function getlistid(){\r",
+											"  var jsonData = pm.response.json();\r",
+											"  return jsonData.id;\r",
+											"}\r",
+											"\r",
+											"pm.collectionVariables.set(\"newListID\",getlistid())\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idBoard', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newBoardID\")).is.eql(jsonData.idBoard);   \r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}",
+										"lists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Testowa lista"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a new card [valid] Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function getcardid(){\r",
+											"  var jsonData = pm.response.json();\r",
+											"  return jsonData.id;\r",
+											"}\r",
+											"\r",
+											"pm.collectionVariables.set(\"newCardID\",getcardid())\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idBoard', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newBoardID\")).is.eql(jsonData.idBoard);   \r",
+											"});\r",
+											"\r",
+											"pm.test('Check the idList', function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect( pm.collectionVariables.get(\"newListID\")).is.eql(jsonData.idList);   \r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards"
+									],
+									"query": [
+										{
+											"key": "idList",
+											"value": "{{newListID}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a card [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Body matches string - limits: {}\",function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.limits).to.eql({});\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards/{{newCardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards",
+										"{{newCardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [valid] Copy 2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Body matches string - value: null\",function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData._value).to.eql(null);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a card [empty key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards/{{newCardID}}?key=&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards",
+										"{{newCardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a card [empty token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - the requested resource was not found\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"The requested resource was not found\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards/{{newCardID}}?key={{API_KEY}}&token=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards",
+										"{{newCardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a card [null key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards/{{newCardID}}?key=null&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards",
+										"{{newCardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a card [nul token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - the requested resource was not found\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"The requested resource was not found\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards/{{newCardID}}?key={{API_KEY}}&token=null",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards",
+										"{{newCardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a card [null key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards/{{newCardID}}?key=null&token=null",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards",
+										"{{newCardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a card [empty key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards/{{newCardID}}?key=&token=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards",
+										"{{newCardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "token",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a card [wrong key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards/{{newCardID}}?key=f04556e464af24a1229159f79565af7e&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards",
+										"{{newCardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "f04556e464af24a1229159f79565af7e"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a card [wrong token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid token\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/cards/{{newCardID}}?key={{API_KEY}}&token=ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"cards",
+										"{{newCardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Deleting a new table",
+					"item": [
+						{
+							"name": "Creating a new table [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function getboardid(){\r",
+											"  var jsonData = pm.response.json();\r",
+											"  return jsonData.id;\r",
+											"}\r",
+											"\r",
+											"pm.collectionVariables.set(\"newBoardID\",getboardid())\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - name: Test123\", function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData.name).to.equal('Test123');\r",
+											"\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body - permissionLevel: private\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.prefs.permissionLevel).to.equal(\"private\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{testBoardName}}"
+										},
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [valid]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Body matches string - value: null\",function () {\r",
+											"   var jsonData = pm.response.json();\r",
+											"   pm.expect(jsonData._value).to.eql(null);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [empty key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key=&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [empty token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - The requested resource was not found.\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"The requested resource was not found.\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": ""
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [null key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key=null&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [null token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - The requested resource was not found.\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"The requested resource was not found.\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token=null",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [null key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key=null&token=null",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "null"
+										},
+										{
+											"key": "token",
+											"value": "null"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [empty key and token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key=&token=",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "token",
+											"value": ""
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [wrong key]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid key\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid key\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key=f04556e464af24a1229159f79565af7e&token={{TOKEN_KEY}}",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "f04556e464af24a1229159f79565af7e"
+										},
+										{
+											"key": "token",
+											"value": "{{TOKEN_KEY}}"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a new table [wrong token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string - invalid token\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"invalid token\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token=ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738",
+									"host": [
+										"{{ENV_URL}}"
+									],
+									"path": [
+										"boards",
+										"{{newBoardID}}"
+									],
+									"query": [
+										{
+											"key": "key",
+											"value": "{{API_KEY}}"
+										},
+										{
+											"key": "token",
+											"value": "ea6ddc19d380be5bc9945f5ce69c8c2b89914978e5f0901e72fbd04ff82c4738"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Happy path",
+			"item": [
+				{
+					"name": "Creating a new table",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"function getboardid(){\r",
+									"  var jsonData = pm.response.json();\r",
+									"  return jsonData.id;\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set(\"newBoardID\",getboardid())\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test ('All reamained options are default'), function () {\r",
+									"    var jsonData= pm.response.json();\r",
+									"    pm.expect(jsonData.prefs.canInvite).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.canBePrivate).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.canBeOrg).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.canBeEnterprise).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.canBePublic).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.backgroundTopColor).to.equal('#0079BF');\r",
+									"    pm.expect(jsonData.prefs.backgroundBottomColor).to.equal('#0079BF');\r",
+									"    pm.expect(jsonData.prefs.backgroundBrightness).to.equal('dark');\r",
+									"    pm.expect(jsonData.prefs.backgroundImageScaled).to.equal(null);\r",
+									"    pm.expect(jsonData.prefs.backgroundImage).to.equal(null);\r",
+									"    pm.expect(jsonData.prefs.background).to.equal('blue');\r",
+									"    pm.expect(jsonData.prefs.calendarFeedEnabled).to.equal(false);\r",
+									"    pm.expect(jsonData.prefs.cardAging).to.equal('regular');\r",
+									"    pm.expect(jsonData.prefs.isTemplate).to.equal(false);\r",
+									"    pm.expect(jsonData.prefs.cardCovers).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.selfJoin).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.invitations).to.equal('members');\r",
+									"    pm.expect(jsonData.prefs.comments).to.equal('members');\r",
+									"    pm.expect(jsonData.prefs.voting).to.equal('disabled');\r",
+									"    pm.expect(jsonData.prefs.hideVotes).to.equal(false);\r",
+									"    pm.expect(jsonData.prefs.permissionLevel).to.equal('private');\r",
+									"    pm.expect(jsonData.pinned).to.equal(false);\r",
+									"    pm.expect(jsonData.idEnterprise).to.equal(null);\r",
+									"    pm.expect(jsonData.closed).to.equal(false);\r",
+									"    pm.expect(jsonData.descData).to.equal(null);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{testBoardName}}"
+								},
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating a new list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"function getlistid(){\r",
+									"  var jsonData = pm.response.json();\r",
+									"  return jsonData.id;\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set(\"newListID\",getlistid())\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body - name: Testowa lista\", function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(jsonData.name).to.equal('Testowa lista');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body - closed: false\", function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(jsonData.closed).to.equal(false);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"boards",
+								"{{newBoardID}}",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Testowa lista"
+								},
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating a new card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"function getcardid(){\r",
+									"  var jsonData = pm.response.json();\r",
+									"  return jsonData.id;\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set(\"newCardID\",getcardid())\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"All reamained options are default\", function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(jsonData.badges.votes).to.equal(0);\r",
+									"   pm.expect(jsonData.badges.viewingMemberVoted).to.equal(false);\r",
+									"   pm.expect(jsonData.badges.subscribed).to.equal(false);\r",
+									"   pm.expect(jsonData.badges.checkItemsEarliestDue).to.equal(null);\r",
+									"   pm.expect(jsonData.badges.description).to.equal(false);\r",
+									"   pm.expect(jsonData.badges.due).to.equal(null);\r",
+									"   pm.expect(jsonData.badges.dueComplete).to.equal(false);\r",
+									"   pm.expect(jsonData.badges.start).to.equal(null);\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"cards"
+							],
+							"query": [
+								{
+									"key": "idList",
+									"value": "{{newListID}}"
+								},
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updating a table",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"All reamained options are default\", function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(jsonData.descData).to.equal(null);\r",
+									"   pm.expect(jsonData.closed).to.equal(true);\r",
+									"   pm.expect(jsonData.idEnterprise).to.equal(null);\r",
+									"   pm.expect(jsonData.pinned).to.equal(false);\r",
+									"   pm.expect(jsonData.prefs.permissionLevel).to.equal('private');\r",
+									"   pm.expect(jsonData.prefs.hideVotes).to.equal(false);\r",
+									"   pm.expect(jsonData.prefs.voting).to.equal('disabled');\r",
+									"   pm.expect(jsonData.prefs.comments).to.equal('members');\r",
+									"   pm.expect(jsonData.prefs.invitations).to.equal('members');\r",
+									"   pm.expect(jsonData.prefs.selfJoin).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.cardCovers).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.isTemplate).to.equal(false);\r",
+									"   pm.expect(jsonData.prefs.cardAging).to.equal('regular');\r",
+									"   pm.expect(jsonData.prefs.calendarFeedEnabled).to.equal(false);\r",
+									"   pm.expect(jsonData.prefs.background).to.equal('blue');\r",
+									"   pm.expect(jsonData.prefs.backgroundImage).to.equal(null);\r",
+									"   pm.expect(jsonData.prefs.backgroundImageScaled).to.equal(null);\r",
+									"   pm.expect(jsonData.prefs.backgroundBrightness).to.equal('dark');\r",
+									"   pm.expect(jsonData.prefs.backgroundBottomColor).to.equal('#0079BF');\r",
+									"   pm.expect(jsonData.prefs.backgroundTopColor).to.equal('#0079BF');\r",
+									"   pm.expect(jsonData.prefs.canBePublic).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.canBeEnterprise).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.canBeOrg).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.canBePrivate).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.canInvite).to.equal(true);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}&closed=true",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"boards",
+								"{{newBoardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								},
+								{
+									"key": "closed",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting a card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body matches string - limits: {}\",function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(jsonData.limits).to.eql({});\r",
+									"})\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/cards/{{newCardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"cards",
+								"{{newCardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting a new table",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Body matches string - value: null\",function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(jsonData._value).to.eql(null);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"boards",
+								"{{newBoardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete no closed table",
+			"item": [
+				{
+					"name": "Creating a new table",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"function getboardid(){\r",
+									"  var jsonData = pm.response.json();\r",
+									"  return jsonData.id;\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set(\"newBoardID\",getboardid())\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{testBoardName}}"
+								},
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating a new list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"function getlistid(){\r",
+									"  var jsonData = pm.response.json();\r",
+									"  return jsonData.id;\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set(\"newListID\",getlistid())\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"boards",
+								"{{newBoardID}}",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Testowa lista"
+								},
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating a new card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"function getcardid(){\r",
+									"  var jsonData = pm.response.json();\r",
+									"  return jsonData.id;\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set(\"newCardID\",getcardid())\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"cards"
+							],
+							"query": [
+								{
+									"key": "idList",
+									"value": "{{newListID}}"
+								},
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updating a table",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/cards/{{newCardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"cards",
+								"{{newCardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting a new table",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"boards",
+								"{{newBoardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Deleting list with card on it",
+			"item": [
+				{
+					"name": "Creating a new table [valid]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"function getboardid(){\r",
+									"  var jsonData = pm.response.json();\r",
+									"  return jsonData.id;\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set(\"newBoardID\",getboardid())\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test ('All reamained options are default'), function () {\r",
+									"    var jsonData= pm.response.json();\r",
+									"    pm.expect(jsonData.prefs.canInvite).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.canBePrivate).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.canBeOrg).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.canBeEnterprise).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.canBePublic).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.backgroundTopColor).to.equal('#0079BF');\r",
+									"    pm.expect(jsonData.prefs.backgroundBottomColor).to.equal('#0079BF');\r",
+									"    pm.expect(jsonData.prefs.backgroundBrightness).to.equal('dark');\r",
+									"    pm.expect(jsonData.prefs.backgroundImageScaled).to.equal(null);\r",
+									"    pm.expect(jsonData.prefs.backgroundImage).to.equal(null);\r",
+									"    pm.expect(jsonData.prefs.background).to.equal('blue');\r",
+									"    pm.expect(jsonData.prefs.calendarFeedEnabled).to.equal(false);\r",
+									"    pm.expect(jsonData.prefs.cardAging).to.equal('regular');\r",
+									"    pm.expect(jsonData.prefs.isTemplate).to.equal(false);\r",
+									"    pm.expect(jsonData.prefs.cardCovers).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.selfJoin).to.equal(true);\r",
+									"    pm.expect(jsonData.prefs.invitations).to.equal('members');\r",
+									"    pm.expect(jsonData.prefs.comments).to.equal('members');\r",
+									"    pm.expect(jsonData.prefs.voting).to.equal('disabled');\r",
+									"    pm.expect(jsonData.prefs.hideVotes).to.equal(false);\r",
+									"    pm.expect(jsonData.prefs.permissionLevel).to.equal('private');\r",
+									"    pm.expect(jsonData.pinned).to.equal(false);\r",
+									"    pm.expect(jsonData.idEnterprise).to.equal(null);\r",
+									"    pm.expect(jsonData.closed).to.equal(false);\r",
+									"    pm.expect(jsonData.descData).to.equal(null);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/boards/?name={{testBoardName}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{testBoardName}}"
+								},
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating a new list [valid]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"function getlistid(){\r",
+									"  var jsonData = pm.response.json();\r",
+									"  return jsonData.id;\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set(\"newListID\",getlistid())\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response body - name: Testowa lista\", function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(jsonData.name).to.equal('Testowa lista');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body - closed: false\", function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(jsonData.closed).to.equal(false);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Body matches string - limits: {}\",function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(pm.response.text()).to.include('{}');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/boards/{{newBoardID}}/lists?name=Testowa lista&key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"boards",
+								"{{newBoardID}}",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Testowa lista"
+								},
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creating a new card [valid]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"function getcardid(){\r",
+									"  var jsonData = pm.response.json();\r",
+									"  return jsonData.id;\r",
+									"}\r",
+									"\r",
+									"pm.collectionVariables.set(\"newCardID\",getcardid())\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"All reamained options are default\", function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(jsonData.badges.votes).to.equal(0);\r",
+									"   pm.expect(jsonData.badges.viewingMemberVoted).to.equal(false);\r",
+									"   pm.expect(jsonData.badges.subscribed).to.equal(false);\r",
+									"   pm.expect(jsonData.badges.checkItemsEarliestDue).to.equal(null);\r",
+									"   pm.expect(jsonData.badges.description).to.equal(false);\r",
+									"   pm.expect(jsonData.badges.due).to.equal(null);\r",
+									"   pm.expect(jsonData.badges.dueComplete).to.equal(false);\r",
+									"   pm.expect(jsonData.badges.start).to.equal(null);\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/cards?idList={{newListID}}&key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"cards"
+							],
+							"query": [
+								{
+									"key": "idList",
+									"value": "{{newListID}}"
+								},
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updating a table [valid]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"All reamained options are default\", function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(jsonData.descData).to.equal(null);\r",
+									"   pm.expect(jsonData.closed).to.equal(true);\r",
+									"   pm.expect(jsonData.idEnterprise).to.equal(null);\r",
+									"   pm.expect(jsonData.pinned).to.equal(false);\r",
+									"   pm.expect(jsonData.prefs.permissionLevel).to.equal('private');\r",
+									"   pm.expect(jsonData.prefs.hideVotes).to.equal(false);\r",
+									"   pm.expect(jsonData.prefs.voting).to.equal('disabled');\r",
+									"   pm.expect(jsonData.prefs.comments).to.equal('members');\r",
+									"   pm.expect(jsonData.prefs.invitations).to.equal('members');\r",
+									"   pm.expect(jsonData.prefs.selfJoin).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.cardCovers).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.isTemplate).to.equal(false);\r",
+									"   pm.expect(jsonData.prefs.cardAging).to.equal('regular');\r",
+									"   pm.expect(jsonData.prefs.calendarFeedEnabled).to.equal(false);\r",
+									"   pm.expect(jsonData.prefs.background).to.equal('blue');\r",
+									"   pm.expect(jsonData.prefs.backgroundImage).to.equal(null);\r",
+									"   pm.expect(jsonData.prefs.backgroundImageScaled).to.equal(null);\r",
+									"   pm.expect(jsonData.prefs.backgroundBrightness).to.equal('dark');\r",
+									"   pm.expect(jsonData.prefs.backgroundBottomColor).to.equal('#0079BF');\r",
+									"   pm.expect(jsonData.prefs.backgroundTopColor).to.equal('#0079BF');\r",
+									"   pm.expect(jsonData.prefs.canBePublic).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.canBeEnterprise).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.canBeOrg).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.canBePrivate).to.equal(true);\r",
+									"   pm.expect(jsonData.prefs.canInvite).to.equal(true);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}&closed=true",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"boards",
+								"{{newBoardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								},
+								{
+									"key": "closed",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting a new table [valid]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body matches string - value: null\",function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   pm.expect(pm.response.text()).to.include(null);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{ENV_URL}}/boards/{{newBoardID}}?key={{API_KEY}}&token={{TOKEN_KEY}}",
+							"host": [
+								"{{ENV_URL}}"
+							],
+							"path": [
+								"boards",
+								"{{newBoardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{API_KEY}}"
+								},
+								{
+									"key": "token",
+									"value": "{{TOKEN_KEY}}"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "testBoardName",
+			"value": "Test123",
+			"type": "string"
+		},
+		{
+			"key": "newBoardID",
+			"value": ""
+		},
+		{
+			"key": "newListID",
+			"value": ""
+		},
+		{
+			"key": "newCardID",
+			"value": ""
+		}
+	]
+}
