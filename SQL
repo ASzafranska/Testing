@@ -1,0 +1,84 @@
+SQL
+Structured Query Language (SQL) is a programming language used to store and process information in a relational database. A relational database stores information in tabular form, with rows and columns representing various data attributes and different relationships between data values.  For example, a database may consist of one table containing company names and addresses, and other tables containing information about specific company departments and employees.
+
+The most popular DBMS (database management system):
+
+MySQL
+It is a system developed by Oracle.  It is particularly popular in the context of web applications, its advantage being that it can work with many operating systems, such as Solaris, FreeBSD, OSX, Windows and Linux. The system has a free version available, which offers many possibilities.
+ 
+Oracle Database
+Oracle Database is a highly regarded system mainly for its performance and efficiency related to protecting users from unauthorized access and fast disaster recovery.
+ 
+IBM DB2
+DB2 is a relational data server that has been on the market since 1983 when it debuted as the first product in IBM's portfolio.  It has been continuously developed and continues to be a proven tool for efficient hybrid data management. DB2's popularity is also due to its implementation of artificial intelligence, its ability to support both physical and cloud servers, and its high flexibility.
+ 
+Microsoft SQL Server
+Microsoft SQL Server (MS SQL) is a system that has been developing since 1989, available for Windows, Linux, and Docker. This client-server database platform is compelling and can work with physical servers 
+and in the cloud, making the tool easily scalable. 
+
+SQL Server 
+This is a fast, stable, functional, and secure system that offers a free edition of the system that can be used in any way (even in commercial projects), but has some limitations.
+
+Commonly used comments and usage examples:
+
+1. SQL Select - Select all records where the Product column has the value 'Laptop' or 'Keyboard'.
+
+Select * FROM Customer
+WHERE Product = 'Laptop'
+OR City = 'Keyboard'
+
+2. SQL Order by - Select all records from the Customer table, sort the result alphabetically, first by the Products, then, by the column Gaming
+
+Select * FROM Customer
+ORDER BY Products, Gaming
+
+3. SQL insert - Insert a new record in the Customers table
+
+INSERT INTO
+ Customers 
+(
+
+CustomerName,  
+City, 
+Country,
+PhoneNumber
+E-mail
+)
+
+VALUES
+ 
+(
+
+'Test Testowy',
+'Warsaw',
+'Poland',
+'+48123456789',
+'testSQL@gmail.com'
+)
+;
+
+4. SQL NULL - Select all records from the Customers where the PhoneNumber column is NOT empty
+
+SELECT * FROM Customers
+WHERE PhoneNumber IS NOT NULL
+
+5. SQL Update - Update the E-mail value
+
+UPDATE Customers
+SET E-mail = 'testSQL1gmail.com'
+WHERE CustomerID = 21
+
+6. SQL BETWEEN - Use the BETWEEN operator to select all the records where the value of the ProductBrand column is alphabetically between 'Corsair' and 'SteelSeries'
+
+SELECT * FROM Products
+WHERE ProductBrand BETWEEN 'Corsair' AND 'SteelSeries"
+
+7. SQL Alias - When displaying the Customers table, refer to the table as Client IT instead of Customers
+
+SELECT *
+FROM Customers AS Client IT
+
+
+
+
+
