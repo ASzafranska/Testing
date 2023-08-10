@@ -1,0 +1,19 @@
+When was it first used?
+
+   - Developed and provided by Facebook
+
+What it is?
+
+  - GraphQl is a very query language used to communicate data between client, browser and server. It allows structuring data-driven applications in a more flexible and efficient way than the RESTFUL approach. 
+
+ How it works?
+
+  - It enables declarative data retrieval, where the client can specify exactly what data it needs from the API. Instead of multiple endpoints that return predetermined data structures, the GraphQL server provides only one endpoint and responds with exactly the data the client requested.
+
+Reasons for starting to replace REST:
+
+    - Increased use of mobile devices creates a need for efficient data loading. 
+GraphQL minimizes the amount of data that needs to be sent over the network to streamline application performance.
+    - The variety of different frontend frameworks and platforms
+Building and maintaining a single API that meets the requirements of all frameworks is quite a challenge. By using GraphQL, each client has access to exactly the data it needs.
+    -  Rapid feature development
