@@ -1,0 +1,30 @@
+What are usability tests?
+    They are among qualitative research methods that allow us to assess how intuitive a website is for a target audience.
+	
+Usability consists of ease of:
+    - learning
+    - memorability
+    - performance
+    - overall satisfaction
+    - errors
+	
+Usability testing objectives:
+    - to identify weaknesses in the offering
+    - observation of how quickly users perform particular actions
+    - analyzing what customers click on most often
+    - checking which pages most often cause exit from the site
+    - testing solutions implemented by competitors
+	
+The ideal number of test users and time?
+There is a theory by Jakob Nielsen, that claims that 5 respondents are enough to discover about 85% of problems in the system. Running the test a second or third time will allow you to find that the problems that occur are duplicated. Therefore, in one iteration, five respondents and an hour of time together with follow-up questions should be enough to uncover most bugs.
+
+Usability tests can be divided into three main types:
+    - moderated remote usability tests
+    - unmoderated remote usability tests
+    - desktop moderated user tests
+
+And what aren't usability tests?
+    - A/B tests
+    - Surveys
+    - Heat maps
+    - Acceptance tests
