@@ -1,0 +1,27 @@
+# Short story about JavaScript
+
+JavaScript is a languages which was created in 1995 by Brendan Eich while he was an engineer at Netscape. At the beginning of JavaScript didn't have the name we know today, originally going to be named LiveScript. 
+It is designed to run as a scripting language in a host environment, and it is up to the host environment to provide mechanisms for communicating with the outside world. Which could a host environmental? Most often the host environment is the browser.
+
+# What does JavaScript allow?
+
+JavaScript allows you to implement complex features on web pages, every time when a web page does more than display static information for you:
+- displaying timely content updates, interactive maps, scrolling video jukeboxes or animated 2D/3D graphics. What else?
+- functions in JS are objects. They may have properties and methods just like other objects. They can be passed as arguments in other functions
+- can handle date and time
+- performs Form Validation although the forms are created using HTML
+- no compiler is needed
+
+It can be said that every website consists of three layers: HTML, CSS and JavaScript:
+
+- HTML is the markup language that we use to structure and give meaning to our web content. For example defining paragraphs, headings, and data tables, or embedding images and videos in the page.
+- CSS is a language of style rules that we use to apply styling to our HTML content. For example setting background colors and fonts, and laying out our content in multiple columns.
+
+# In addition to websites where JavaScript can still be used?
+
+- Games
+- Smartwatches
+- Art
+- Machine Learning
+- Mobile Applications
+- Server Applications
