@@ -1,0 +1,99 @@
+Exercises - Level Intermediate
+
+Reminder:
+
+Steps:
+1. We create a folder where we will keep the files (in my case, it will be a folder named "JavaScriptForIntermediate" on  the desktop)
+2. Openning VS
+3. Downoland the extension Live Server from the Extension Tab
+4. Click in "Files" in the left-hand corner
+5. Click on the "Open a folder"
+6. Choose the made folder
+7. Click "New a file"
+8. Get name (for example exerciseForBeginner.html) Remember about .html!
+9. Write ! and click enter. Our result: We should have the html strukture
+10. Write <script> <script> under the <body> <body> 
+11. If you wanta check undering examples in browser you need to click the right button of mouse and select the Open in Live Server
+12. Then you need to click F12, open the devtools -> check the console tab
+13. Have Fun :D
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+//1
+  const connect = a => a*a;
+  const array = Array.from([2,3,4], connect);
+  const resultArray = array.join("");
+  console.log(resultArray);
+  // Response: 4916
+
+//2 
+  const array1 = [2,3,4];
+  const resultArray2 = 2 in array1;
+  console.log (resultArray2);  // Response: true;
+  const resultArray3 = 3 in array1;
+  console.log (resultArray3); // Response: false;
+// Why? The in operator return true if the specified property (not value) is in the specified object
+
+//3
+  const func = function (x,y=7) {
+    return x+y;
+}
+  const result = func(3);
+  console.log(result)
+//Response: 10 Why? funct(3) this place we pass on value 3 as paramet x, parametr y=7, if function will return x+y we have 10
+
+//4
+const numbers = [33,55,11];
+const [first, ...rest ] = numbers
+const resultNumbers = rest[1];
+console.log(resultNumbers)
+/* Response: 11 Why?
+'const [first, ...rest] = numbers; - This line uses array destructuring, which means that the elements of the array are assigned to variables. 
+first takes the value of the first element, and rest takes the rest of the elements as a new array. 
+As a result, first will have a value of 33 and rest will have a value of [55, 11]. */
+
+//5
+const array3 = [2,4,6]
+let resultArray3 = 1;
+for (const value of array3) {
+resultArray3 *=value;
+}
+console.log(resultArray3)
+//Response 48
+/*Why? */
+
+//6
+var number = 123;
+delete number;
+const result = number;
+console.log(result)
+//Response: 123 Why? Delete operator removes a property from a object. Any property declared with var cannot be deleted from the global scope or a function's scope
+
+//7
+const result3 = null && underfined;
+console.log(result3)
+//Response: null Why? && opeator return left operant if can be converted to false, otherwise, returns right operand. False are always: null, undefined, NaN
+
+//8
+const result4 = "Ala">"Ola";
+console.log(result4);
+//Response: true Why? 
+
+//9
+const array4 = [2,3,4];
+const x = (v,i) => v*i;
+const result5 = array5.map(x);
+console.log(result5);
+//Response: [2,9,16]
+
+    </script>
+</body>
+</html>
